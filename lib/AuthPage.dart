@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_auth/LogInWidget.dart';
+import 'package:flutter_fire_auth/RegisterWidget.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  Widget _displayedWidget = LogInWidget();
+
+  void _changeWidget() {
+    setState(() {
+      _displayedWidget.toStringShort() == LogInWidget().toStringShort()
+          ? _displayedWidget = RegisterWidget()
+          : _displayedWidget = LogInWidget();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,21 +27,21 @@ class AuthPage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Container(
-          width: 300,
-          height: 300,
-          child: Card(
-            elevation: 20,
-            child: Column(
-              children: <Widget>[
-                Text("Press button to log in"),
-                RaisedButton(
-                  child: Text("Log in"),
-                  onPressed: () => Navigator.pushNamed(context, 'homePage'),
-                ),
-              ],
+        child: Column(
+          children: <Widget>[
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 450),
+              child: _displayedWidget,
+              transitionBuilder: (Widget child, Animation<double> animation) =>
+                  ScaleTransition(child: child, scale: animation),
+              reverseDuration: const Duration(milliseconds: 450),
             ),
-          ),
+            Flexible(child: Container(),),
+            RaisedButton(
+              child: Text("Switch"),
+              onPressed: () => _changeWidget(),
+            ),
+          ],
         ),
       ),
       backgroundColor: Colors.blue,
