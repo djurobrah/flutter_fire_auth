@@ -24,4 +24,3 @@ class MyApp extends StatelessWidget {
 }
 
 // TODO: connect Firebase auth and expand from there
-// TODO: play with animations a little more

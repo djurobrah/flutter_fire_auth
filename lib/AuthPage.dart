@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_auth/AnimatedAuthCard.dart';
+
 import 'package:flutter_fire_auth/LogInWidget.dart';
 import 'package:flutter_fire_auth/RegisterWidget.dart';
 
@@ -7,7 +9,8 @@ class AuthPage extends StatefulWidget {
   _AuthPageState createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends State<AuthPage>
+    with SingleTickerProviderStateMixin {
   Widget _displayedWidget = LogInWidget();
 
   void _changeWidget() {
@@ -18,6 +21,42 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
+  Animation<double> animation;
+  AnimationController controller;
+
+  void _setupAnimation() {
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
+    animation = controller.drive(
+      CurveTween(curve: Curves.easeOutBack),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          print('completed');
+//          _changeWidget();
+        }
+        if (status == AnimationStatus.dismissed) {
+          print('dismissed');
+          controller.forward();
+          _changeWidget();
+        }
+      });
+    controller.forward();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setupAnimation();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,23 +65,22 @@ class _AuthPageState extends State<AuthPage> {
           child: Text('Authenticate'),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 450),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(child: Container()),
+          Center(
+            child: AnimatedAuthCard(
+              animation: animation,
               child: _displayedWidget,
-              transitionBuilder: (Widget child, Animation<double> animation) =>
-                  ScaleTransition(child: child, scale: animation),
-              reverseDuration: const Duration(milliseconds: 450),
             ),
-            Flexible(child: Container(),),
-            RaisedButton(
-              child: Text("Switch"),
-              onPressed: () => _changeWidget(),
-            ),
-          ],
-        ),
+          ),
+          Expanded(child: Container()),
+          RaisedButton(
+            child: Text("Switch"),
+            onPressed: () => controller.reverse(),
+          ),
+        ],
       ),
       backgroundColor: Colors.blue,
     );
