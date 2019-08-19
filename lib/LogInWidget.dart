@@ -6,7 +6,7 @@ class LogInWidget extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 50),
       children: <Widget>[
-        Text("Press button to Login"),
+        Text("Press button to Login", style: TextStyle(fontSize: 20),),
         RaisedButton(
           child: Text("Log in"),
           onPressed: () => Navigator.pushNamed(context, 'homePage'),

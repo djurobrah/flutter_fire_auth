@@ -4,7 +4,7 @@ import 'package:flutter_fire_auth/router.dart';
 import 'package:flutter_fire_auth/AuthPage.dart';
 
 void main() {
-  FluroRouter.defineRoutes(); //initializing the Fluro Router
+  FluroRouter.defineRoutes();
   runApp(MyApp());
 }
 
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'FlutterFire Auth',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Lexend',
       ),
       home: AuthPage(),
 //      initialRoute: ,

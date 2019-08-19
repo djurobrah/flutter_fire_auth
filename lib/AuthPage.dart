@@ -34,7 +34,6 @@ class _AuthPageState extends State<AuthPage>
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           print('completed');
-//          _changeWidget();
         }
         if (status == AnimationStatus.dismissed) {
           print('dismissed');
